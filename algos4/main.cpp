@@ -12,30 +12,25 @@ using namespace std;
 struct pracownik{
     int id;
     string nazwaPracownika;
+    pracownik *poprzedni, *nastepny;
 };
 
 struct oddzial{
     string nazwa;
-    pracownik pracownicy;
-    int wielkosc_oddzialu;
-    string nazwaKierownika;
-    oddzial(string nazwa, int wielkosc_odzialu){
-        pracownicy = *new pracownik[wielkosc_odzialu];
-        this->nazwa = nazwa;
-    }
-    
-    
+    pracownik* prac;
+    oddzial* nastepnyOddzial;
 };
 
 struct ListaOddzialow{
     oddzial oddzialy;// = *new oddzial[1];
 
     void dodajOddzial(string nazwaOddzialu, int wielkoscZmiany){
-        if(oddzialy != NULL){
+        
+      /*  if(oddzialy != NULL){
             int size = sizeof(oddzial)/sizeof(oddzial[0]);
         }else{
             oddzialy = *new oddzial[1]
-        }
+        }*/
         
     }
 };
