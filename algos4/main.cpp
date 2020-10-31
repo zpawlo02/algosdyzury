@@ -16,19 +16,19 @@ struct ListaPracownikow{
     unsigned int rozmiarTablicy;
     unsigned int ilePracownikow;
     
-    pracownik *get(unsigned int& idPracownika)const
+    pracownik *get(unsigned int & idPracownika)const
     {
         return tabPracownicy[idPracownika];
     }
     
-    void usunPracownika(unsigned int& idPracownika)const
+    void usunPracownika(unsigned int & idPracownika)const
     {
         tabPracownicy[idPracownika]=nullptr;
     }
     
     void dodajPracownika(pracownik *& nPracownik){
         if( ilePracownikow == rozmiarTablicy ){
-            rozmiarTablicy = rozmiarTablicy * 2;
+            rozmiarTablicy += 1;
             
             pracownik **wiekszaTab =
             new pracownik*[rozmiarTablicy];
