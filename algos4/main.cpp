@@ -1,39 +1,94 @@
-//
-//  main.cpp
-//  algos4
-//
-//  Created by Paweł Zieliński on 21/10/2020.
-//  Copyright © 2020 Paweł Zieliński. All rights reserved.
-//
+
 #include <iostream>
 using namespace std;
 
 
+
 struct pracownik{
-    int id;
     string nazwaPracownika;
     pracownik *poprzedni, *nastepny;
 };
 
-struct oddzial{
-    string nazwa;
-    pracownik* prac;
-    oddzial* nastepnyOddzial;
-};
+struct ListaPracownikow{
+    
+    pracownik **tabPracownicy;
+    
+    unsigned int rozmiarTablicy;
+    unsigned int ilePracownikow;
+    
+    pracownik *get(unsigned int& idPracownika)const
+    {
+        return tabPracownicy[idPracownika];
+    }
+    
+    void usunPracownika(unsigned int& idPracownika)const
+    {
+        tabPracownicy[idPracownika]=nullptr;
+    }
+    
+    void dodajPracownika(pracownik *& nPracownik){
+        if( ilePracownikow == rozmiarTablicy ){
+            rozmiarTablicy = rozmiarTablicy * 2;
+            
+            pracownik **wiekszaTab =
+            new pracownik*[rozmiarTablicy];
+            
+            for(int i = 0; i < ilePracownikow; i++){
+                
+                wiekszaTab[i] = tabPracownicy[i];
+                
+            }
+            delete[] tabPracownicy;
+            tabPracownicy = wiekszaTab;
+            delete[] wiekszaTab;
 
-struct ListaOddzialow{
-    oddzial oddzialy;// = *new oddzial[1];
-
-    void dodajOddzial(string nazwaOddzialu, int wielkoscZmiany){
+        }
         
-      /*  if(oddzialy != NULL){
-            int size = sizeof(oddzial)/sizeof(oddzial[0]);
-        }else{
-            oddzialy = *new oddzial[1]
-        }*/
+        tabPracownicy[ilePracownikow] = nPracownik;
+        
+        ilePracownikow += 1;
         
     }
 };
+
+struct oddzial{
+    
+    string nazwa;
+    unsigned int wielkoscZmiany;
+    unsigned int iloscPracownikow;
+    pracownik* prac;
+    oddzial* nastepnyOddzial;
+    ListaPracownikow lPracownikow;
+    oddzial(string nazwa, unsigned int wielkoscZmiany){
+        this->nazwa = nazwa;
+        this->wielkoscZmiany = wielkoscZmiany;
+    }
+};
+/*
+struct ListaOddzialow{
+    
+    oddzial *
+
+};*/
+
+oddzial *ogon = NULL, *glowa = NULL;
+
+void dodajOddzial( string nazwa, int wielkoscZmiany){
+    oddzial *nOddzial = new oddzial(nazwa, wielkoscZmiany);
+   
+    if(ogon == NULL && glowa == NULL){
+        ogon = nOddzial;
+        glowa = nOddzial;
+    }else{
+        glowa->nastepnyOddzial = nOddzial;
+        glowa = nOddzial;
+    }
+        
+}
+
+
+
+
 
 int main(int argc, const char * argv[]) {
     int n, iloscZmian,nowaWielkoscZmiany;
@@ -53,11 +108,13 @@ int main(int argc, const char * argv[]) {
                     case 'w':
                         cin >> nazwaOddzialu;
                         cin >> wielkoscZmiany;
+                        dodajOddzial( nazwaOddzialu, wielkoscZmiany);
                         break;
                         
                     case 'e':
                         cin >> nazwaPracownika;
                         cin >> nazwaOddzialu;
+                        
                         break;
                 }
                 break;
